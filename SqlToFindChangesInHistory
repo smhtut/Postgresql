@@ -1,0 +1,17 @@
+select 
+  *
+from
+    (
+      select
+        t2.product_id
+        , t2.isobsolete
+        , lag(t2.isobsolete) over (order by t2.updated_datetime) as prev_isobsolete
+        , t2.updated_by
+        , t2.updated_datedtime
+      from
+        log as t2
+      where
+        t2.product_id = ""
+    ) t
+where
+    prev_isobsolete is distinct from isobsolete
